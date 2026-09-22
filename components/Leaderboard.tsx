@@ -1,0 +1,5 @@
+import Link from "next/link";
+import {ArrowUpRight,Medal} from "lucide-react";
+import {growth,profit,ranked} from "@/lib/demo-data";
+const money=(n:number)=>new Intl.NumberFormat("en-US",{style:"currency",currency:"USD",minimumFractionDigits:0}).format(n);
+export function Leaderboard(){return <div className="table-wrap"><table><thead><tr><th>Rank</th><th>Contestant</th><th>Starting</th><th>Profit / Loss</th><th>Growth</th><th>Status</th></tr></thead><tbody>{ranked.map((c,i)=>{const p=profit(c);return <tr key={c.id}><td><span className={`rank r${i+1}`}>{i<3?<Medal size={17}/>:null}{i+1}</span></td><td><Link className="trader" href={`/contestants/${c.id}`}><span>{c.name}<small>{c.broker}</small></span><ArrowUpRight size={16}/></Link></td><td>{money(c.startingBalance)}</td><td className={p>=0?"positive":"negative"}>{p>=0?"+":""}{money(p)}</td><td><span className={p>=0?"pill positive":"pill negative"}>{growth(c).toFixed(1)}%</span></td><td><span className="status"><i/>{c.status}</span></td></tr>})}</tbody></table></div>}
