@@ -1,0 +1,3 @@
+import {createClient} from "@supabase/supabase-js";
+export type Signal={id:string;symbol:string;timeframe:string;direction:"BUY"|"SELL"|"NO TRADE";confidence:number;entry_low:number|null;entry_high:number|null;stop_loss:number|null;take_profit_1:number|null;take_profit_2:number|null;reasoning:string;risk_note:string;created_at:string};
+export async function getSignals(limit=20):Promise<Signal[]>{if(!process.env.NEXT_PUBLIC_SUPABASE_URL||!process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY)return[];const s=createClient(process.env.NEXT_PUBLIC_SUPABASE_URL,process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY);const{data,error}=await s.from("signals").select("*").order("created_at",{ascending:false}).limit(limit);if(error)return[];return(data||[]) as Signal[]}
